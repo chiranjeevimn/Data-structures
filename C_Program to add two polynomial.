@@ -1,0 +1,135 @@
+//C program to add two polynomials. 
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int coef;
+    int expo;
+    struct Node *link;
+};
+
+typedef struct Node *NODE;
+NODE getnode()
+{
+	return (struct Node*) malloc(sizeof(struct Node*));
+}
+
+NODE insert(NODE head, int coef, int expo) 
+{
+    NODE temp,newp;
+    newp=getnode();
+    newp->coef = coef;
+    newp->expo = expo;
+    newp->link = NULL;
+    
+    if (head == NULL || expo> head->expo) 
+	{
+        newp->link=head;
+	  head=newp;
+   	 }
+	else
+	{
+		temp=head;
+		while(temp->link!=NULL && temp->link->expo>=expo)
+			temp=temp->link;
+		newp->link=temp->link;
+		temp->link=newp;
+	}
+	return head;
+}
+
+void print(NODE head) 
+{
+    NODE temp=head; 	
+    if (head == NULL) 
+	{
+        printf("no poly\n");
+        return;
+	}
+	else
+	{
+		while(temp!=NULL)
+		{
+			printf("%dX^%d",temp->coef,temp->expo);
+			temp=temp->link;
+			if(temp!=NULL)
+				printf("+");
+			else
+				printf("\n");
+		}
+	}
+}
+NODE create(NODE head)
+{
+	int n,i,coef,exp;
+	printf("Enter the no. of terms : \n");
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		printf("Enter the coefficient for the term \n");
+		scanf("%d",&coef);
+		printf("Enter the exponent for the term \n");
+		scanf("%d",&exp);
+		head=insert(head,coef,exp);
+	}
+	return head;
+}
+
+NODE add(NODE head1, NODE head2) 
+{
+    
+    NODE poly1=head1;
+    NODE poly2=head2;
+    NODE result = NULL;
+    while (poly1 != NULL && poly2 != NULL) 
+	{
+        if (poly1->expo == poly2->expo)
+	 {
+            result= insert(result, poly1->coef + poly2->coef, poly1->expo);
+            poly1 = poly1->link;
+            poly2 = poly2->link;
+        } 
+	else if (poly1->expo > poly2->expo)	
+	 {
+            result=insert(result, poly1->coef, poly1->expo);
+            poly1 = poly1->link;
+        }
+	 else 
+	{
+            result=insert(result, poly2->coef, poly2->expo);
+            poly2 = poly2->link;
+        }
+    }
+    
+    while (poly1 != NULL) 
+	{
+        result=insert(result, poly1->coef, poly1->expo);
+        poly1 = poly1->link;
+    }
+    
+    while (poly2 != NULL) 
+	{
+        result=insert(result, poly2->coef, poly2->expo);
+        poly2 = poly2->link;
+    }
+    printf("\nAfter adding, The polynomial is : ");
+    print(result);
+}
+
+int main() {
+    NODE head1 = NULL;
+    NODE head2 = NULL;
+    printf("// Enter First polynomial: \n");
+    head1=create(head1);
+    printf("\nThe first polynomial is:\t ");
+    print(head1);
+
+    printf("\n// Enter Second polynomial:\n ");
+    head2=create(head2);
+    printf("\nThe Second polynomial is:\t ");
+    print(head2);
+
+    add(head1, head2);
+
+    return 0;
+}
