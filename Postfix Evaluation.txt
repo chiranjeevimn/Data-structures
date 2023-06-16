@@ -1,0 +1,44 @@
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+int compute(int op1,int op2,char symbol)
+{
+	switch(symbol)
+	{
+		case '+':return op1+op2;
+		case '-':return op1-op2;
+		case '*':return op1*op2;
+		case '/':return op1/op2;
+		case '%':return op1%op2;
+		
+	}
+	return;
+}
+int main()
+{
+	double s[20],res,op1,op2;
+	int top,i;
+	char postfix[20],symbol;
+	printf("Enter the postfix expression : ");
+	scanf("%s",postfix);
+	top=-1;
+	for(i=0;i<strlen(postfix);i++)
+	{
+		symbol=postfix[i];
+		if(isdigit(symbol))
+		{
+			s[++top]=symbol-'0';
+		}
+		else
+		{
+			op2=s[top--];
+			op1=s[top--];
+			res=compute(op1,op2,symbol);
+			s[++top]=res;
+		}
+	}
+	res=s[top];
+	printf("The result of the postfix exression : %lf\n",res);
+	return;
+}
+		
