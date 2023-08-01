@@ -1,0 +1,43 @@
+#include<stdio.h>
+int main()
+{
+	int a[10][10],b[10][10],i,j,k,m,n,p,q;
+	static int c[5][5];
+	printf("Enter the 1 array size :\n");
+	scanf("%d%d",&m,&n);
+	printf("Enter the 1 array elements :\n");
+	for(i=0;i<m;i++)
+		for(j=0;j<n;j++)
+		{
+			scanf("%d",&a[i][j]);
+		}
+	printf("Enter the 2 array size :\n");
+	scanf("%d%d",&p,&q);
+	printf("Enter the 2 array elements :\n");
+	for(i=0;i<p;i++)
+		for(j=0;j<q;j++)
+			scanf("%d",&b[i][j]);
+	if(n==p)
+	{
+		for(i=0;i<m;i++)
+		{
+			for(j=0;j<q;j++)	
+			{
+				for(k=0;k<n;k++)
+				{
+					c[i][j]=c[i][j]+a[i][k]*b[k][j];
+				}
+			}
+		}
+	}
+	printf("Multiplication of two matrix are\n");
+	for(i=0;i<m;i++)
+	{
+		for(j=0;j<q;j++)
+		{
+			printf("%d\t",c[i][j]);
+		}
+		printf("\n");
+	}
+	return;
+}
